@@ -35,8 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         if ($role == 'admin') {
             header("Location: manage_admins.php");
-        } elseif ($role == 'librarian') {
-            header("Location: manage_librarians.php");
+        } elseif ($role == 'officer') {
+            header("Location: manage_admins.php");
         } else {
             header("Location: manage_members.php");
         }
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label for="role">Role:</label>
     <select name="role" required>
         <option value="admin" <?= $user['role'] == 'admin' ? 'selected' : '' ?>>Admin</option>
-        <option value="librarian" <?= $user['role'] == 'librarian' ? 'selected' : '' ?>>Librarian</option>
+        <option value="officer" <?= $user['role'] == 'officer' ? 'selected' : '' ?>>Officer</option>
         <option value="member" <?= $user['role'] == 'member' ? 'selected' : '' ?>>Member</option>
     </select><br>
 

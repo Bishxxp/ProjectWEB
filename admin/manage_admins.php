@@ -7,15 +7,15 @@ if ($_SESSION['role'] != 'admin') {
     exit;
 }
 
-// Fetch Admins and Librarians
-$sql = "SELECT * FROM users WHERE role IN ('admin', 'librarian')";
+// Fetch Admins
+$sql = "SELECT * FROM users WHERE role IN ('admin')";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-<h2>Manage Admins and Librarians</h2>
+<h2>Manage Admins/Officer</h2>
 <table>
     <thead>
         <tr>
@@ -39,7 +39,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </tbody>
 </table>
 
-<!-- ฟอร์มเพิ่ม Admin/บรรณารักษ์ -->
+<!-- ฟอร์มเพิ่ม Admin -->
 <form method="POST" action="add_user.php">
     <label for="username">Username:</label>
     <input type="text" name="username" required><br>
@@ -50,7 +50,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <label for="role">Role:</label>
     <select name="role" required>
         <option value="admin">Admin</option>
-        <option value="librarian">Librarian</option>
+        <option value="officer">Officer</option>
     </select><br>
 
     <button type="submit">Add User</button>

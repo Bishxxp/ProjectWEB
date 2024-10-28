@@ -1,35 +1,35 @@
 -- สร้างฐานข้อมูล (ถ้ายังไม่มี)
-CREATE DATABASE IF NOT EXISTS library_system;
+CREATE DATABASE IF NOT EXISTS equipmentDB;
 USE library_system;
 
--- ตารางผู้ใช้ (users)
+-- 1. ตารางบุคคลากร/สมาชิก: เก็บข้อมูลของผู้ดูแลระบบและสมาชิก
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'librarian', 'member') NOT NULL
+    role ENUM('admin','officer', 'member') NOT NULL
 );
 
--- ตารางหมวดหมู่ (categories)
+-- 2. ตารางหมวดหมู่: จัดเก็บข้อมูลหมวดหมู่ของอุปกรณ์
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL
 );
 
--- ตารางที่เก็บหนังสือ (shelves)
+-- 3. ตารางที่เก็บอุปกรณ์: เก็บข้อมูลเกี่ยวกับสถานที่จัดเก็บอุปกรณ์
 CREATE TABLE IF NOT EXISTS shelves (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    location VARCHAR(100) NOT NULL
+    location VARCHAR(255) NOT NULL
 );
 
--- ตารางสถานะ (statuses)
+-- 4. ตารางสถานะ: เก็บข้อมูลสถานะของการยืมอุปกรณ์
 CREATE TABLE IF NOT EXISTS statuses (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    status_name VARCHAR(50) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL
 );
 
--- ตารางหนังสือ (books)
-CREATE TABLE IF NOT EXISTS books (
+-- 5. ตารางอุปกรณ์: บันทึกรายละเอียดของอุปกรณ์แต่ละชิ้น
+CREATE TABLE IF NOT EXISTS equipment (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     author VARCHAR(100) NOT NULL,
@@ -41,20 +41,20 @@ CREATE TABLE IF NOT EXISTS books (
     FOREIGN KEY (status_id) REFERENCES statuses(id)
 );
 
--- ตารางข้อมูลการยืม/คืน (borrow_return_records)
-CREATE TABLE IF NOT EXISTS borrow_return_records (
+-- 6. ตารางเก็บข้อมูลการยืม/คืน: บันทึกประวัติการยืมและคืนอุปกรณ์
+CREATE TABLE IF NOT EXISTS loans (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    book_id INT,
-    borrow_date DATE NOT NULL,
-    return_date DATE,
-    status ENUM('borrowed', 'returned') NOT NULL,
+    equipment_id INT,
+    loan_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    return_date DATETIME,
+    status ENUM('on loan', 'returned') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
+    FOREIGN KEY (equipment_id) REFERENCES equipment(id)
 );
 
--- ตารางกำหนดจำนวนวันให้ยืม (loan_periods)
-CREATE TABLE IF NOT EXISTS loan_periods (
+-- 7. ตารางกำหนดจำนวนวันให้ยืม: เก็บข้อมูลเกี่ยวกับจำนวนวันที่อนุญาตให้ยืมอุปกรณ์
+CREATE TABLE IF NOT EXISTS loan_duration (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    days_allowed INT NOT NULL
+    duration_days INT NOT NULL
 );

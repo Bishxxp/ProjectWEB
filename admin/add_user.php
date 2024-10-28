@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // แก้ไขตรงนี้เพื่อเปลี่ยนเส้นทางตาม role ที่เพิ่ม
             if ($role == 'admin') {
                 header("Location: manage_admins.php"); // ไปหน้า Admin
-            } elseif ($role == 'librarian') {
+            } elseif ($role == 'officer') {
                 header("Location: manage_admins.php"); // ไปหน้า Librarian
             } elseif ($role == 'member') {
                 header("Location: manage_members.php"); // ไปหน้า Member
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label for="role">Role:</label>
     <select name="role" required>
         <option value="admin">Admin</option>
-        <option value="librarian">Librarian</option>
+        <option value="officer">Officer</option>
         <option value="member">Member</option>
     </select><br>
 

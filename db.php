@@ -1,7 +1,7 @@
 <?php
 // ตั้งค่าเกี่ยวกับฐานข้อมูล
 $host = 'localhost'; // ชื่อโฮสต์
-$dbname = 'library_system'; // ชื่อฐานข้อมูล
+$dbname = 'equipmentDB'; // ชื่อฐานข้อมูล
 $username = 'root'; // ชื่อผู้ใช้
 $password = '12345678'; // รหัสผ่านของผู้ใช้
 

@@ -40,7 +40,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <label for="role">Role:</label>
         <select name="role">
             <option value="admin">Admin</option>
-            <option value="librarian">Librarian</option>
+            <option value="officer">officer</option>
             <option value="member">Member</option>
         </select>
         <br>

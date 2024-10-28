@@ -2,29 +2,23 @@
 session_start();
 include '../db.php';
 
-if ($_SESSION['role'] != 'admin') {
+// ตรวจสอบการเข้าสู่ระบบ
+if (!isset($_SESSION['username']) || $_SESSION['role'] != 'officer') {
     header("Location: ../login.php");
     exit;
 }
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-
-    // ลบผู้ใช้ตาม ID
     $sql = "DELETE FROM users WHERE id = :id";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id', $id);
 
     if ($stmt->execute()) {
-        if ($_SESSION['role'] == 'admin') {
-            header("Location: manage_admins.php");
-        } elseif ($_SESSION['role'] == 'officer') {
-            header("Location: manage_admins.php");
-        } else {
-            header("Location: manage_members.php");
-        }
+        header("Location: manage_profile.php?from=manage_profile");
         exit;
     } else {
         echo "Error deleting user!";
     }
 }
+?>
