@@ -11,7 +11,6 @@ include '../db.php';
 <p>Welcome, <?php echo $_SESSION['username']; ?> (officer)</p>
 <ul>
     <li><a href="manage_profile.php">Edit Profile</a></li>
-    <li><a href="change_password.php">Change Password</a></li>
     <li><a href="manage_equipment.php">Manage Equipment Data</a></li>
     <li><a href="manage_categories.php">Manage Equipment Categories</a></li>
     <li><a href="update_status.php">Update Equipment Status</a></li>

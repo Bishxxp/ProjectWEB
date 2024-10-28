@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 session_start(); // เริ่มต้น session
 
 // ตรวจสอบการล็อกอิน
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php"); // ถ้าไม่มีการล็อกอิน ให้กลับไปที่หน้าล็อกอิน
+if ($_SESSION['role'] !== 'admin')  {
+    header("Location: ../login.php"); // ถ้าไม่มีการล็อกอิน ให้กลับไปที่หน้าล็อกอิน
     exit;
 }
 
@@ -47,7 +47,6 @@ if ($user) {
         <li><a href="manage_admins.php">Manage Admins/officer</a><br></li>
         <li><a href="manage_members.php">Manage Members</a><br></li>
         <li><a href="manage_loan_status.php">Manage Loan Status</a><br></li>
-        <li><a href="manage_loan_days.php">Manage Loan Days</a><br></li>
     </ul>
 
     <a href="../logout.php">Logout</a> <!-- ลิงก์สำหรับออกจากระบบ -->

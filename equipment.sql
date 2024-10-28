@@ -1,6 +1,6 @@
 -- สร้างฐานข้อมูล (ถ้ายังไม่มี)
 CREATE DATABASE IF NOT EXISTS equipmentDB;
-USE library_system;
+USE equipmentDB;
 
 -- 1. ตารางบุคคลากร/สมาชิก: เก็บข้อมูลของผู้ดูแลระบบและสมาชิก
 CREATE TABLE IF NOT EXISTS users (
