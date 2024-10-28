@@ -16,12 +16,6 @@ CREATE TABLE IF NOT EXISTS categories (
     name VARCHAR(255) NOT NULL
 );
 
--- 3. ตารางที่เก็บอุปกรณ์: เก็บข้อมูลเกี่ยวกับสถานที่จัดเก็บอุปกรณ์
-CREATE TABLE IF NOT EXISTS shelves (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    location VARCHAR(255) NOT NULL
-);
-
 -- 4. ตารางสถานะ: เก็บข้อมูลสถานะของการยืมอุปกรณ์
 CREATE TABLE IF NOT EXISTS statuses (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,10 +27,8 @@ CREATE TABLE IF NOT EXISTS equipment (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     category_id INT,
-    shelf_id INT,
     status_id INT,
     FOREIGN KEY (category_id) REFERENCES categories(id),
-    FOREIGN KEY (shelf_id) REFERENCES shelves(id),
     FOREIGN KEY (status_id) REFERENCES statuses(id)
 );
 
