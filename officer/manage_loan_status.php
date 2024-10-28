@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 session_start(); // เริ่มต้น session
 
 // ตรวจสอบการเข้าถึงเฉพาะ officer หรือ admin
-if ($_SESSION['role'] !== 'admin') {
+if ($_SESSION['role'] !== 'officer') {
     header("Location: ../login.php");
     exit;
 }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Manage Loan Status</title>
 </head>
 <body>
-    <h1>Manage Loan Status (Admin)</h1>
+    <h1>Manage Loan Status (Officer)</h1>
 
     <h2>Search Equipment</h2>
     <form method="GET" action="">
