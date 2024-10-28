@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS loans (
     equipment_id INT,
     loan_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_date DATETIME,
-    status ENUM('on loan', 'returned') NOT NULL,
+    status ENUM('Available', 'Unavailable') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(id)
 );

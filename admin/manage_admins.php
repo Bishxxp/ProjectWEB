@@ -54,4 +54,5 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </select><br>
 
     <button type="submit">Add User</button>
+    <a href="dashboard.php">Back to Dashboard</a>
 </form>
