@@ -99,5 +99,6 @@ $categories = getAllCategories();
         </tr>
         <?php endforeach; ?>
     </table>
+    <a href="dashboard.php">Back to Dashboard</a>
 </body>
 </html>

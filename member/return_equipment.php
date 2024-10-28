@@ -1,20 +1,21 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if ($_SESSION['role'] !== 'member') {
     header("Location: ../login.php");
     exit();
 }
 
 require '../db.php'; // เชื่อมต่อฐานข้อมูล
 
-// Query: ดึงรายการอุปกรณ์ที่สถานะเป็น 'unavailable'
+// Query: ดึงรายการอุปกรณ์ที่สถานะเป็น 'unavailable' และคำนวณระยะเวลาการยืม
 $sql = "SELECT 
             l.id AS loan_id, 
             e.id AS equipment_id, 
             e.title, 
             c.name AS category, 
             l.loan_date, 
-            l.return_date 
+            l.return_date, 
+            DATEDIFF(l.return_date, l.loan_date) AS loan_duration -- คำนวณระยะเวลาการยืม
         FROM loans l
         JOIN equipment e ON l.equipment_id = e.id
         LEFT JOIN categories c ON e.category_id = c.id
@@ -41,6 +42,7 @@ $loans = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th>Category</th>
             <th>Loan Date</th>
             <th>Return Date</th>
+            <th>Loan Duration (Days)</th> <!-- เพิ่มคอลัมน์แสดงระยะเวลาการยืม -->
             <th>Action</th>
         </tr>
         <?php if (!empty($loans)): ?>
@@ -51,6 +53,7 @@ $loans = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo htmlspecialchars($loan['category']); ?></td>
                     <td><?php echo htmlspecialchars($loan['loan_date']); ?></td>
                     <td><?php echo htmlspecialchars($loan['return_date']); ?></td>
+                    <td><?php echo htmlspecialchars($loan['loan_duration']); ?> days</td> <!-- แสดงระยะเวลาการยืม -->
                     <td>
                         <form method="POST" action="process_return.php">
                             <input type="hidden" name="loan_id" value="<?php echo $loan['loan_id']; ?>">
@@ -62,10 +65,10 @@ $loans = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="6">No equipment to return.</td>
+                <td colspan="7">No equipment to return.</td>
             </tr>
         <?php endif; ?>
     </table>
-    <a href = 'dashboard.php'>Back</a>
+    <a href="dashboard.php">Back</a>
 </body>
 </html>

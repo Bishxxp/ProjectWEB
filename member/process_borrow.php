@@ -3,57 +3,41 @@ session_start();
 require '../db.php'; // เชื่อมต่อฐานข้อมูล
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_name = $_POST['user_name'];
+    $user_name = $_POST['user_name']; // เก็บชื่อผู้ใช้
     $equipment_id = $_POST['equipment_id'];
     $loan_date = $_POST['loan_date'];
     $return_date = $_POST['return_date'];
 
-    // คำนวณจำนวนวัน (duration_days) ระหว่าง loan_date และ return_date
-    $loan_date_obj = new DateTime($loan_date);
-    $return_date_obj = new DateTime($return_date);
-    $duration_days = $loan_date_obj->diff($return_date_obj)->days;
+    // คำนวณระยะเวลาการยืม
+    $duration_days = (strtotime($return_date) - strtotime($loan_date)) / (60 * 60 * 24); // คำนวณจำนวนวัน
 
-    try {
-        // ตรวจสอบว่าผู้ใช้มีอยู่ในระบบหรือไม่
-        $user_stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
-        $user_stmt->execute([$user_name]);
-        $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
+    // Insert ลงในตาราง loans
+    $stmt = $db->prepare("INSERT INTO loans (user_id, equipment_id, loan_date, return_date, status) 
+                          VALUES (:user_id, :equipment_id, :loan_date, :return_date, 'Unavailable')");
+    $stmt->bindParam(':user_id', $_SESSION['user_id']);
+    $stmt->bindParam(':equipment_id', $equipment_id);
+    $stmt->bindParam(':loan_date', $loan_date);
+    $stmt->bindParam(':return_date', $return_date);
+    
+    if ($stmt->execute()) {
+        // ดึง loan_id ที่เพิ่ง insert ลงไปในตาราง loans
+        $loan_id = $db->lastInsertId();
 
-        if ($user) {
-            $user_id = $user['id'];
+        // Insert ลงในตาราง loan_duration เพื่อบันทึกระยะเวลาการยืม
+        $durationStmt = $db->prepare("INSERT INTO loan_duration (loan_id, duration_days) VALUES (:loan_id, :duration_days)");
+        $durationStmt->bindParam(':loan_id', $loan_id);
+        $durationStmt->bindParam(':duration_days', $duration_days);
+        $durationStmt->execute();
 
-            // เพิ่มข้อมูลการยืมลงในตาราง loans
-            $loan_stmt = $db->prepare("INSERT INTO loans 
-                                       (user_id, equipment_id, loan_date, return_date, status) 
-                                       VALUES (?, ?, ?, ?, 'Unavailable')");
-            $loan_stmt->execute([$user_id, $equipment_id, $loan_date, $return_date]);
+        // Update สถานะอุปกรณ์เป็น unavailable (status_id = 2)
+        $updateStmt = $db->prepare("UPDATE equipment SET status_id = 2 WHERE id = :equipment_id");
+        $updateStmt->bindParam(':equipment_id', $equipment_id);
+        $updateStmt->execute();
 
-            // ดึง loan_id ของการยืมล่าสุด
-            $loan_id = $db->lastInsertId();
-
-            // เก็บข้อมูลระยะเวลาในตาราง loan_duration
-            $duration_stmt = $db->prepare("INSERT INTO loan_duration (loan_id, duration_days) 
-                                           VALUES (?, ?)");
-            $duration_stmt->execute([$loan_id, $duration_days]);
-
-            // อัปเดตสถานะอุปกรณ์เป็น 'unavailable'
-            $update_equipment_stmt = $db->prepare("UPDATE equipment 
-                                                   SET status_id = (SELECT id FROM statuses WHERE name = 'unavailable') 
-                                                   WHERE id = ?");
-            $update_equipment_stmt->execute([$equipment_id]);
-
-            echo "Equipment borrowed successfully! Duration: $duration_days days.";
-        } else {
-            echo "User not found!";
-        }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        // หลังจากอัปเดตสถานะอุปกรณ์เรียบร้อย ให้ redirect ไปยังหน้าที่ต้องการ
+        header("Location: borrow_equipment.php"); // ถ้ายืมสำเร็จ ไปยังหน้าสำเร็จ
+    } else {
+        echo "Error borrowing equipment.";
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<body>
-    <a href = 'return_equipment.php'>Back</a>
-</body>
-</html>

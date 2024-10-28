@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if ($_SESSION['role'] !== 'member') {
     header("Location: ../login.php");
     exit();
 }
@@ -57,7 +57,7 @@ $equipments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </table>
 
     <!-- ฟอร์มการยืมอุปกรณ์ -->
-    <form method="POST" action="process_borrow.php" style="margin-top: 20px;">
+    <form method="POST" action="process_borrow.php" style="margin-top: 20px;"> <!-- เปลี่ยน action ไปที่ process_borrow.php -->
         <h2>Borrow Form</h2>
         <label>Your Name:</label>
         <input type="text" name="user_name" required><br>
@@ -76,9 +76,6 @@ $equipments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <label>Return Date:</label>
         <input type="date" name="return_date" required><br>
-
-        <label>Duration (days):</label>
-        <input type="number" name="duration_days" required><br>
 
         <input type="submit" value="Borrow Equipment">
     </form>

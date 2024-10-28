@@ -56,4 +56,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="Update Category">
     </form>
 </body>
+<a href="dashboard.php">Back to Dashboard</a>
 </html>
