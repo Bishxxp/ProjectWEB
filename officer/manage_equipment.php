@@ -8,22 +8,24 @@ if ($_SESSION['role'] !== 'officer') {
 require '../db.php'; // เชื่อมต่อกับฐานข้อมูล
 
 // ฟังก์ชันการจัดการข้อมูลอุปกรณ์
-function addEquipment($name, $category) {
+function addEquipment($name, $category, $status) {
     global $db;
-    $sql = "INSERT INTO equipment (title, category_id) VALUES (:name, :category)";
+    $sql = "INSERT INTO equipment (title, category_id, status_id) VALUES (:name, :category, :status)";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':category', $category);
+    $stmt->bindParam(':status', $status); // เพิ่ม status
     return $stmt->execute();
 }
 
-function editEquipment($id, $name, $category) {
+function editEquipment($id, $name, $category, $status) {
     global $db;
-    $sql = "UPDATE equipment SET title = :name, category_id = :category WHERE id = :id";
+    $sql = "UPDATE equipment SET title = :name, category_id = :category, status_id = :status WHERE id = :id";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':category', $category);
+    $stmt->bindParam(':status', $status); // เพิ่ม status
     return $stmt->execute();
 }
 
@@ -37,7 +39,10 @@ function deleteEquipment($id) {
 
 function getAllEquipments() {
     global $db;
-    $sql = "SELECT e.id, e.title, c.name AS category FROM equipment e JOIN categories c ON e.category_id = c.id";
+    $sql = "SELECT e.id, e.title, c.name AS category, s.name AS status 
+            FROM equipment e 
+            JOIN categories c ON e.category_id = c.id
+            JOIN statuses s ON e.status_id = s.id"; // ดึงสถานะด้วย
     $stmt = $db->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -46,13 +51,15 @@ function getAllEquipments() {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['add'])) {
         $name = $_POST['name'];
-        $category = $_POST['category']; // อาจจะต้องเป็น ID ของ category
-        addEquipment($name, $category);
+        $category = $_POST['category'];
+        $status = $_POST['status']; // รับค่าจากฟอร์ม status
+        addEquipment($name, $category, $status);
     } elseif (isset($_POST['edit'])) {
         $id = $_POST['id'];
         $name = $_POST['name'];
-        $category = $_POST['category']; // อาจจะต้องเป็น ID ของ category
-        editEquipment($id, $name, $category);
+        $category = $_POST['category'];
+        $status = $_POST['status']; // รับค่าจากฟอร์ม status
+        editEquipment($id, $name, $category, $status);
     } elseif (isset($_POST['delete'])) {
         $id = $_POST['id'];
         deleteEquipment($id);
@@ -61,6 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // ดึงข้อมูลอุปกรณ์ทั้งหมด
 $equipments = getAllEquipments();
+
+// ดึงข้อมูล status ทั้งหมด
+$statuses = $db->query("SELECT * FROM statuses")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -77,9 +87,14 @@ $equipments = getAllEquipments();
         <label for="name">Equipment Name:</label>
         <input type="text" name="name" required>
         <label for="category">Category ID:</label>
-        <input type="number" name="category" required> <!-- ใช้ ID ของ category -->
+        <input type="number" name="category" required>
+        <label for="status">Status:</label>
+        <select name="status" required>
+            <?php foreach ($statuses as $status): ?>
+                <option value="<?php echo $status['id']; ?>"><?php echo $status['name']; ?></option>
+            <?php endforeach; ?>
+        </select>
         <input type="submit" name="add" value="Add Equipment">
-        <!-- <input type="submit" name="edit" value="Edit Equipment"> -->
     </form>
 
     <!-- ตารางแสดงข้อมูลอุปกรณ์ -->
@@ -88,6 +103,7 @@ $equipments = getAllEquipments();
             <th>ID</th>
             <th>Name</th>
             <th>Category</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         <?php foreach ($equipments as $equipment): ?>
@@ -95,6 +111,7 @@ $equipments = getAllEquipments();
             <td><?php echo $equipment['id']; ?></td>
             <td><?php echo $equipment['title']; ?></td>
             <td><?php echo $equipment['category']; ?></td>
+            <td><?php echo $equipment['status']; ?></td> <!-- แสดงสถานะ -->
             <td>
                 <form method="POST" action="" style="display:inline;">
                     <input type="hidden" name="id" value="<?php echo $equipment['id']; ?>">
