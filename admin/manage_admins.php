@@ -8,7 +8,7 @@ if ($_SESSION['role'] != 'admin') {
 }
 
 // Fetch Admins
-$sql = "SELECT * FROM users WHERE role IN ('admin')";
+$sql = "SELECT * FROM users WHERE role IN ('admin', 'officer')";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
