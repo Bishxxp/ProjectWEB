@@ -9,4 +9,4 @@ if ($_SESSION['role'] !== 'librarian') {
 <h1>Librarian Dashboard</h1>
 <p>Welcome, <?php echo $_SESSION['username']; ?> (Librarian)</p>
 <!-- เนื้อหาอื่นๆ สำหรับบรรณารักษ์ เช่น จัดการหนังสือ -->
-<a href="logout.php">Logout</a>
+<a href="../logout.php">Logout</a>

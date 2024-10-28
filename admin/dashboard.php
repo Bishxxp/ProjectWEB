@@ -44,9 +44,10 @@ if ($user) {
 
     <h2>Management</h2>
     <ul>
-        <li><a href="manage_librarians.php">Manage Librarians</a></li>
-        <li><a href="manage_books.php">Manage Books</a></li>
-        <li><a href="manage_members.php">Manage Members</a></li>
+        <li><a href="manage_admins.php">Manage Admins/Librarians</a><br></li>
+        <li><a href="manage_members.php">Manage Members</a><br></li>
+        <li><a href="manage_loan_status.php">Manage Loan Status</a><br></li>
+        <li><a href="manage_loan_days.php">Manage Loan Days</a><br></li>
     </ul>
 
     <a href="../logout.php">Logout</a> <!-- ลิงก์สำหรับออกจากระบบ -->
