@@ -14,6 +14,7 @@ include '../db.php';
     <li><a href="manage_equipment.php">Manage Equipment Data</a></li>
     <li><a href="manage_categories.php">Manage Equipment Categories</a></li>
     <li><a href="update_status.php">Update Equipment Status</a></li>
+    <li><a href="loan_status.php">Loan Status</a></li>
 </ul>
 
 <a href="../logout.php">Logout</a>

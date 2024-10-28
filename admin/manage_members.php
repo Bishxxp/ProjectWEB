@@ -9,7 +9,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
 }
 
 // ดึงข้อมูลผู้ใช้ทั้งหมด
-$sql = "SELECT * FROM users WHERE role != 'admin'";
+$sql = "SELECT * FROM users WHERE role IN ('member')";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
