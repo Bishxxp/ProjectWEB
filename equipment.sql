@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS statuses (
 CREATE TABLE IF NOT EXISTS equipment (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    author VARCHAR(100) NOT NULL,
     category_id INT,
     shelf_id INT,
     status_id INT,
