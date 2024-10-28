@@ -44,6 +44,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </table>
     <a href="add_member.php">Add Member</a>
-    <a href="admin/dashboard.php">Back to Dashboard</a>
+    <a href="dashboard.php">Back to Dashboard</a>
 </body>
 </html>

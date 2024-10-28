@@ -43,6 +43,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
         <?php endforeach; ?>
     </table>
-    <a href="officer/dashboard.php">Back to Dashboard</a>
+    <a href="dashboard.php">Back to Dashboard</a>
 </body>
 </html>
