@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS loans (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     equipment_id INT,
-    loan_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    return_date DATETIME,
+    loan_date DATE,
+    return_date DATE,
     status ENUM('Available', 'Unavailable') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(id)
@@ -47,5 +47,7 @@ CREATE TABLE IF NOT EXISTS loans (
 -- 7. ตารางกำหนดจำนวนวันให้ยืม: เก็บข้อมูลเกี่ยวกับจำนวนวันที่อนุญาตให้ยืมอุปกรณ์
 CREATE TABLE IF NOT EXISTS loan_duration (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    duration_days INT NOT NULL
+    loan_id INT,
+    duration_days INT NOT NULL,
+    FOREIGN KEY (loan_id) REFERENCES loans(id)
 );

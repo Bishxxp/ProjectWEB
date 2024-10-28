@@ -11,6 +11,6 @@ include '../db.php';
 <p>Welcome, <?php echo $_SESSION['username']; ?> (Member)</p>
 <ul>
     <li><a href="manage_member.php">Edit Profile</a></li>
-    <li><a href="borrow_member.php">Borrow Equipment</a></li>
+    <li><a href="borrow_equipment.php">Borrow Equipment</a></li>
 </ul>
 <a href="../logout.php">Logout</a>
