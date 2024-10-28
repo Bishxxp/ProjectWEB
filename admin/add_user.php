@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($role == 'admin') {
                 header("Location: manage_admins.php"); // ไปหน้า Admin
             } elseif ($role == 'librarian') {
-                header("Location: manage_librarians.php"); // ไปหน้า Librarian
+                header("Location: manage_admins.php"); // ไปหน้า Librarian
             } elseif ($role == 'member') {
                 header("Location: manage_members.php"); // ไปหน้า Member
             }
