@@ -82,5 +82,6 @@ $equipments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <input type="submit" value="Borrow Equipment">
     </form>
+    <a href="dashboard.php?from=dashboard_member">Cancel</a>
 </body>
 </html>

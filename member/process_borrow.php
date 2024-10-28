@@ -51,3 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <a href = 'return_equipment.php'>Back</a>
+</body>
+</html>

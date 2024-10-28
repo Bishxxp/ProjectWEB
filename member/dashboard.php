@@ -12,5 +12,7 @@ include '../db.php';
 <ul>
     <li><a href="manage_member.php">Edit Profile</a></li>
     <li><a href="borrow_equipment.php">Borrow Equipment</a></li>
+    <li><a href="borrow_member.php">Borrow History</a></li>
+    <li><a href="return_equipment.php">Return Equipment</a></li>
 </ul>
 <a href="../logout.php">Logout</a>
