@@ -125,6 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
     </table>
 
-    <a href="../admin_dashboard.php">Back to Dashboard</a>
+    <a href="dashboard.php">Back to Dashboard</a>
 </body>
 </html>
