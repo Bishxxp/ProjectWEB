@@ -10,7 +10,7 @@ include '../db.php';
 <h1>Officer Dashboard</h1>
 <p>Welcome, <?php echo $_SESSION['username']; ?> (officer)</p>
 <ul>
-    <li><a href="edit_profile.php">Edit Profile</a></li>
+    <li><a href="manage_profile.php">Edit Profile</a></li>
     <li><a href="change_password.php">Change Password</a></li>
     <li><a href="manage_equipment.php">Manage Equipment Data</a></li>
     <li><a href="manage_categories.php">Manage Equipment Categories</a></li>
