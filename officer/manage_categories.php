@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 if ($_SESSION['role'] !== 'officer') {
     header("Location: ../login.php");
@@ -94,7 +97,8 @@ $categories = getAllCategories();
                     <input type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure you want to delete this category?');">
                 </form>
                 <!-- ลิงก์แก้ไข -->
-                <a href="edit_category.php?id=<?php echo $category['id']; ?>">Edit</a>
+                <input type="hidden" name="id" value="<?php echo $category['id']; ?>">
+                <input type="button" value="Edit" onclick="window.location.href='edit_category.php?id=<?php echo $category['id']; ?>';">
             </td>
         </tr>
         <?php endforeach; ?>
